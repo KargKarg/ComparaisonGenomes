@@ -45,8 +45,29 @@ def core_genome() -> dict:
         - donnees_cg (dict): structure contenant les CG.
     """
     donnees_cg = {}
-    with open('Resultats/core_genome.txt', 'r') as fil:
+    with open('CoreGenome/core_genome.txt', 'r') as fil:
         for ligne in fil:
             donnees_cg[ligne.replace('\n', '')[1:]] = fil.__next__().replace('\n', '')
 
     return donnees_cg
+
+
+def core_genome_align() -> dict:
+    """
+    Fonction qui prend les CG alignés sous format FASTA et qui crée un dictionnaire avec clé:valeur
+
+    clé: Nom du génome.
+    valeur: CG aligné.
+
+    Argument:
+        - None
+
+    Return:
+        - donnees_cg_align (dict): structure contenant les CG alignés.
+    """
+    donnees_cg_align = {}
+    with open('CoreGenome/core_genome_alignement.txt', 'r') as fil:
+        for ligne in fil:
+            donnees_cg_align[ligne.replace('\n', '')[1:]] = fil.__next__().replace('\n', '')
+
+    return donnees_cg_align

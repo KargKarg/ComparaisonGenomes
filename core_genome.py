@@ -11,7 +11,7 @@ def clustering(g1: list, g2: list, g3: list, n1: str, n2: str, n3: str, tppfid: 
     Si Alignement(seq1, seq2) > 94%id et Alignement(seq1, seq3) > 94%id et Alignement(seq2, seq3) > 94%id:
         Alors les 3 protéines sont considérés dans le CoreGenome.
 
-    Les résultats sont disponibles dans le dossier Resultats/coregenome_clusters.txt, les cds de gauches appartiennent
+    Les résultats sont disponibles dans le dossier CoreGenome/coregenome_clusters.txt, les cds de gauches appartiennent
     au Génome 1, celles du milieu au Génome 2 et celles de gauche au Génome 3.
 
     Un fichier texte comprenant le Core Génome du Génome spécifique est aussi créée.
@@ -46,13 +46,13 @@ def clustering(g1: list, g2: list, g3: list, n1: str, n2: str, n3: str, tppfid: 
                         fil.write(f'{cpt1}/{len(g1)}   {cpt2}/{len(g2)}   {cpt3}/{len(g3)}\n')
 
                     if alignement_pair.pourcentage_identite(seq1, seq3) > 94 and alignement_pair.pourcentage_identite(seq2, seq3) > 94:
-                        with open(f"Resultats/core_genome_{n1}.txt", 'a') as fil:
+                        with open(f"CoreGenome/core_genome_{n1}.txt", 'a') as fil:
                             fil.write(f"{seq1}\n")
-                        with open(f"Resultats/core_genome_{n2}.txt", 'a') as fil:
+                        with open(f"CoreGenome/core_genome_{n2}.txt", 'a') as fil:
                             fil.write(f"{seq2}\n")
-                        with open(f"Resultats/core_genome_{n3}.txt", 'a') as fil:
+                        with open(f"CoreGenome/core_genome_{n3}.txt", 'a') as fil:
                             fil.write(f"{seq3}\n")
-                        with open("Resultats/core_genome_clusters.txt", 'a') as fil:
+                        with open("CoreGenome/core_genome_clusters.txt", 'a') as fil:
                             fil.write(f"{seq1};{seq2};{seq3}\n")
                         trouver = True
                         break
@@ -187,28 +187,28 @@ def mise_en_forme(n1: str, n2: str, n3: str) -> None:
     Return:
         - None.
     """
-    with open(f"Resultats/core_genome_{n1}.txt", 'r') as fil:
+    with open(f"CoreGenome/core_genome_{n1}.txt", 'r') as fil:
         seq1 = ""
         for ligne in fil:
             seq1 += ligne.replace('\n', '')
 
-    with open(f"Resultats/core_genome_{n2}.txt", 'r') as fil:
+    with open(f"CoreGenome/core_genome_{n2}.txt", 'r') as fil:
         seq2 = ""
         for ligne in fil:
             seq2 += ligne.replace('\n', '')
 
-    with open(f"Resultats/core_genome_{n3}.txt", 'r') as fil:
+    with open(f"CoreGenome/core_genome_{n3}.txt", 'r') as fil:
         seq3 = ""
         for ligne in fil:
             seq3 += ligne.replace('\n', '')
 
-    with open("Resultats/core_genome.txt", 'w') as fil:
+    with open("CoreGenome/core_genome.txt", 'w') as fil:
         fil.write(f">{n1}\n{seq1}\n>{n2}\n{seq2}\n>{n3}\n{seq3}")
 
 
 def alignement() -> None:
     """
-    Fonction qui aligne les 3 CG et les sauvegarde dans Resultats au format FASTA.
+    Fonction qui aligne les 3 CG et les sauvegarde dans CoreGenome au format FASTA.
 
     Argument:
         - None.
@@ -221,5 +221,5 @@ def alignement() -> None:
 
     align1, align2, align3 = alignement_triple.alignement_global(cg1, cg2, cg3)
 
-    with open('Resultats/core_genome_alignement.txt', 'w') as fil:
+    with open('CoreGenome/core_genome_alignement.txt', 'w') as fil:
         fil.write(f">{n1}\n{align2}\n>{n2}\n{align2}\n>{n3}\n{align3}")
