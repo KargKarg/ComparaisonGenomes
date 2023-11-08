@@ -1,6 +1,7 @@
 import random
 import distance
 import numpy as np
+import extraction
 
 
 def consensus(sequence1: str, sequence2: str) -> str:
@@ -62,7 +63,7 @@ def neighbor_joining(data: dict) -> str:
 
     for i in range(matrice_dist.shape[0]):
         for j in range(i+1, matrice_dist.shape[1]):
-            matrice_dist[i, j] = distance.jaccard(100, data[annuaire[i]], data[annuaire[j]])
+            matrice_dist[i, j] = distance.jukes_cantor(data[annuaire[i]], data[annuaire[j]])
             matrice_dist[j, i] = matrice_dist[i, j].copy()
         U[i] = sum(matrice_dist[i])/(len(annuaire)-2)
 
@@ -79,7 +80,7 @@ def neighbor_joining(data: dict) -> str:
 
     del data[annuaire[mi]], data[annuaire[mj]]
 
-    val = round(distance.jaccard(100, cons, list(data.values())[0]), 4)
+    val = round(distance.jukes_cantor(cons, list(data.values())[0]), 4)
 
     phylo = f"({list(data.keys())[0]}:{val/2}, {phylo}:{val/2})"
 
@@ -111,7 +112,7 @@ def upgma(data: dict) -> str:
 
     for i in range(matrice_dist.shape[0]):
         for j in range(i+1, matrice_dist.shape[1]):
-            matrice_dist[i, j] = distance.jaccard(100, data[annuaire[i]], data[annuaire[j]])
+            matrice_dist[i, j] = distance.jukes_cantor(data[annuaire[i]], data[annuaire[j]])
             matrice_dist[j, i] = matrice_dist[i, j].copy()
             if matrice_dist[i, j] < minimum:
                 mi, mj = i, j
@@ -125,3 +126,6 @@ def upgma(data: dict) -> str:
     phylo = f"({data[0]}:{val}, {phylo}:{val})"
 
     return phylo
+
+
+neighbor_joining(extraction.caracteres())

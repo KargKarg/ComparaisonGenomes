@@ -71,3 +71,42 @@ def core_genome_align() -> dict:
             donnees_cg_align[ligne.replace('\n', '')[1:]] = fil.__next__().replace('\n', '')
 
     return donnees_cg_align
+
+
+def caracteres() -> dict:
+    """
+    Fonction qui prend les CG alignés en dictionnaire avec clé:valeur et qui séléctionne les caractères informatifs
+    dans le but de réaliser une phylogénie.
+
+    Ces caractères ont:
+        - au moins 1 état différent
+        - ne présente pas de gap
+        - au moins 2 états identiques
+
+    clé: Nom du génome.
+    valeur: CG aligné.
+
+    Argument:
+        - None
+
+    Return:
+        - carac (dict): structure contenant les caractères.
+    """
+    cg = core_genome_align()
+    carac = {gid: "" for gid in cg.keys()}
+    sequences = list(cg.values())
+    for i in range(len(sequences[0])):
+        etats = set()
+        for seq in sequences:
+            etats = etats.union(seq[i])
+        if '-' not in etats and len(etats) != 1:
+            for gid, seq in cg.items():
+                carac[gid] += f"{seq[i]}"
+
+    with open('CoreGenome/caracteres.txt', 'w') as filout:
+        texte = ""
+        for gid, car in carac.items():
+            texte += f">{gid}\n{car}\n"
+        filout.write(texte)
+
+    return carac
